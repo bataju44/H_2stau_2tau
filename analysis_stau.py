@@ -132,50 +132,11 @@ def scale_hist(hist_bkg_list,norm=1):
 ######### Opening File ##########
 #################################
 
-# sig_file =['/cluster/home/bataju/lxplus_aod/500/Merge.aod.pool.root ']	#500
-# sig_file.append('/cluster/home/bataju/lxplus_aod/500/Merge.10k.pool.root ')	#500
-# sig_file.append('/cluster/home/bataju/filter/500_aod/merge._20k.pool.root')	#500
-
-# sig_file = ['/cluster/home/bataju/375_800/lxplux_aod/10k/Merge._10k.pool.root']	#800
-# sig_file.append('/cluster/home/bataju/375_800/lxplux_aod/20k/Merge._20k.pool.root')	#800
-
-# sig_file = ['/cluster/home/bataju/compare/eventgeneration/different_stau_mass/1500/TRUTH1/DAOD_TRUTH1.test.pool.root']	#1500
-# sig_file = ['/cluster/home/bataju/compare/eventgeneration/different_stau_mass/1000/TRUTH1/DAOD_TRUTH1.test.pool.root']	#1000
-# sig_file = ['/cluster/home/bataju/compare/eventgeneration/different_stau_mass/2000/TRUTH1/DAOD_TRUTH1.test.pool.root']	#2000
-# temp = [1500,1000,2000]
-# sig_file = ['/cluster/home/bataju/compare/eventgeneration/different_stau_mass/'+str(i)+'/TRUTH1/DAOD_TRUTH1.test.pool.root' for i in temp]
-
-
-# sig_file = ['/cluster/home/bataju/BENCHMARK/700/truth/DAOD_TRUTH1.test.pool.root']	#BenchMark 700
-# sig_file = ['/cluster/home/bataju/BENCHMARK/800/truth/DAOD_TRUTH1.test.pool.root']	#BenchMark 800
-# sig_file = ['/cluster/home/bataju/BENCHMARK/1000/truth/DAOD_TRUTH1.test.pool.root']	#BenchMark 1000
-# sig_file = ['/cluster/home/bataju/BENCHMARK/1500/truth/DAOD_TRUTH1.test.pool.root']	#BenchMark 1500
-# sig_file = ['/cluster/home/bataju/BENCHMARK/2000/truth/DAOD_TRUTH1.test.pool.root']	#BenchMark 2000
-# sig_file = ['/cluster/home/bataju/BENCHMARK/2500/truth/DAOD_TRUTH1.test.pool.root']	#BenchMark 2500
-
+#
 # temp = [700,730,800,830,930,1000,1130,1280,1500,1700,2000,2200,2500]
 # temp = [1500,1700,2000,2200,2500]
 temp = [1000]
 sig_file = ['/cluster/home/bataju/BENCHMARK/'+str(i)+'/truth/DAOD_TRUTH1.test.pool.root' for i in temp]
-
-# temp = [250,300,500,650,850,1050,1450,2250]
-# sig_file = ['/cluster/home/bataju/PAPER/'+str(i)+'/truth/DAOD_TRUTH1.test.pool.root' for i in temp]
-
-# tautau = ['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341881.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH600_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17073421._00000{}.pool.root.1'.format(i+1) for i in xrange(6)] 	#600
-# tautau = ['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341885.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH1000_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4298_e5984_a875_r10201_r10210_p3749/DAOD_HIGG4D4.17259964._00000{}.pool.root.1'.format(i+1) for i in xrange(6)] #1000
-# tautau = ['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.345288.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH2000_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5686_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17076570._00000{}.pool.root.1'.format(i+1) for i in xrange(6)]	#2000
-# tautau = ['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.345292.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH2500_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5686_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17073341._00000{}.pool.root.1'.format(i+1) for i in xrange(6)]	#2500
-
-#bkg 
-# ttbar   =   ['/cluster/home/bataju/stau_analaysis/aod_files/mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.recon.AOD.e6337_s3126_r9364/AOD.12458455._000337.pool.root.1']
-# ttbar.append('/cluster/home/bataju/stau_analaysis/aod_files/mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.recon.AOD.e6337_s3126_r9364/AOD.12458455._004964.pool.root.1')
-# ttbar.append('/cluster/home/bataju/stau_analaysis/aod_files/mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.recon.AOD.e6337_s3126_r9364/AOD.14761208._000530.pool.root.1')
-# ttbar.append('/cluster/home/bataju/stau_analaysis/aod_files/mc16_13TeV.410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad.recon.AOD.e6337_s3126_r9364/AOD.14761208._004126.pool.root.1')
-
-# ztautau =     ['/cluster/home/bataju/stau_analaysis/aod_files/mc16_13TeV.361108.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Ztautau.recon.AOD.e3601_s3126_r9364/AOD.11182601._001043.pool.root.1']
-# ztautau.append('/cluster/home/bataju/stau_analaysis/aod_files/mc16_13TeV.361108.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Ztautau.recon.AOD.e3601_s3126_r9364/AOD.11182601._001055.pool.root.1')
-# ztautau.append('/cluster/home/bataju/stau_analaysis/aod_files/mc16_13TeV.361108.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Ztautau.recon.AOD.e3601_s3126_r9364/AOD.11182673._001851.pool.root.1')
-# ztautau.append('/cluster/home/bataju/stau_analaysis/aod_files/mc16_13TeV.361108.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Ztautau.recon.AOD.e3601_s3126_r9364/AOD.11182673._003111.pool.root.1')
 
 file_list = sig_file[:]
 
