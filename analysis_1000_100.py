@@ -230,8 +230,7 @@ for k in xrange(len(file_list)):
 				sorted_chain['nue1'] = list(reversed(decay_chain['nue1']))
 				sorted_chain['stau'] = list(reversed(decay_chain['stau']))
 				sorted_chain['higgs'] = list(reversed(decay_chain["higgs"]))
-			print [PT(i) for i in sorted_chain.values()], " after sorting "
-
+			
 			stau1.push_back(stau[0].p4())
 			stau2.push_back(stau[1].p4())
 
