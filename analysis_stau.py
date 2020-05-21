@@ -13,8 +13,6 @@ ROOT.gROOT.SetBatch(True)
 
 # Initialize the xAOD infrastructure:
 if(not ROOT.xAOD.Init().isSuccess()): print "Failed xAOD.Init()"
-
-
 # for Mt2
 ROOT.gInterpreter.ProcessLine('#include "/cluster/home/bataju/compare/mt2/CalcGenericMT2/CalcGenericMT2/MT2_ROOT.h"')
 ROOT.gSystem.Load("/cluster/home/bataju/compare/mt2/CalcGenericMT2/CalcGenericMT2/MT2_ROOT.h")
@@ -203,7 +201,7 @@ for k in xrange(len(file_list)):
 	nevent = 0
 
 	for entry in xrange(t.GetEntries()):
-		logging.basicConfig(filename='{}B.log'.format(temp[k]), filemode='wb',level=logging.DEBUG, force =True)
+
 		# if entry == 20: break
 		# print '========================= Standard Prints'
 		# print "Number of input events:", t.GetEntries()
@@ -222,18 +220,7 @@ for k in xrange(len(file_list)):
 		METp.SetPxPyPzE(Met.get(1).mpx(),Met.get(1).mpy(),0,Met.get(1).sumet())
 
 		higgs = [i for i in all_particles if i.absPdgId() in [36,35]]
-		assert len(higgs) ,"NO HIGGS BOSONS FOUND!!!"
-		# print '		Heavy Higgs Found: 				%s'% pdg(higgs)
-		# print '		PT of the HIGGS:				%s'%PT(higgs)
-		# print '		Mass of the HIGGS:				%s'%MASS(higgs)
-		# print '		Choosing the last higgs			'
-		# print [find_child(i) for i in higgs]
-		# print reversed([i.p4().Pt() for i in higgs])
-		# for i in higgs:
-		# 	print i.child(0).pdgId()
-		# 	if i.child(0).pdgId() == i.pdgId():
-		# 		print "\t" ,i.child(0).child(0).pdgId()
-		print "__________________________________________"
+		
 		higgs_with_children = []
 		print higgs
 		
@@ -242,31 +229,7 @@ for k in xrange(len(file_list)):
 			elif i.child(0).absPdgId() in [1000015,2000015]: choosen_higgs = [i]
 			else:	higgs_with_children.append(i)
 		assert len(choosen_higgs) == 1
-
-		
-		print "PT of higgs that is being picked \t", PT(choosen_higgs) , '\t', 'barcode: ', '\t',choosen_higgs[0].barcode()
-		print "PT of higgs that is not picked \t", [i.p4().Pt() for i in higgs_with_children ] , '\t', 'barcode: ', '\t',[ i.barcode() for i in higgs_with_children ]
-		print "Immidate children of higgs ", [ (i.pdgId(),i.child(j).pdgId()) for  i in higgs for j in xrange(i.nChildren())]
-		print "PT of all the higgs present \t", PT(higgs), '\t', 'barcode: ', '\t',[i.barcode() for i in higgs]
-		# print PT(higgs), ' \n Pt higgs '
-		print "Pdg higgs \t", pdg(higgs) 
-		print "PT of child of all higgs \t" , [ PT(find_child(i)) for i in higgs if i is not None]
-		print "Pdgid of child of all higgs \t" , [ pdg(find_child(i)) for i in higgs if i is not None]
-		print "barcode  of all the Childen from higgs \t" , [ j.barcode() for i in higgs for j in find_child(i)  if i is not None]
-
-		# Higgs.push_back(choosen_higgs[0].p4()) 
-		# this a where to pick my Higgs, and i think that was a mistake 
-
-		decay_chain["higgs"]=[choosen_higgs]
-		sum_of_higgs_last +=1
-		# print '		Child of the choosen_higgs:			%s' %pdg(choosen_higgs)
-		# print '		Mass of the child of choosen_higgs:	%s' %MASS(choosen_higgs)
-		# print '		PT of the child of choosen_higgs:	%s' %PT(choosen_higgs)
-		# print PT(choosen_higgs)
-		# print pdg(choosen_higgs)
-		print "Choosen HIggs:", choosen_higgs
-		# stau = [i for i in choosen_higgs if i.absPdgId() in [1000015,2000015]]
-		print "child from the choosen higgs", choosen_higgs[0].child(0).pdgId(), choosen_higgs[0].child(1).pdgId()
+	
 		h.Fill(choosen_higgs[0].child(0).p4().Pt())	
 		h1.Fill(choosen_higgs[0].child(1).p4().Pt())	
 		h2.Fill(choosen_higgs[0].p4().Pt())
@@ -276,40 +239,28 @@ for k in xrange(len(file_list)):
 				print " Choose higgs child", i.child(j).pdgId()
 		stau = [ i.child(j) for i in choosen_higgs for j in xrange(i.nChildren())]
 		
-		print pdg(stau)
-		print "Di-stau Pt of all the stau", (stau[0].p4() +stau[1].p4()).Pt()
-		print "Di-stau mass ", (stau[0].p4() +stau[1].p4()).M()
-
-		print "parent of stau [0] \t" , stau[0].parent().pdgId() , "barcode \t" , stau[0].parent().barcode()
-		print "parent of stau [1] \t" , stau[1].parent().pdgId() , "barcode \t"  , stau[1].parent().barcode()
-		print [i.barcode() == stau[0].parent().barcode() for i in higgs ]
-			
-		
-		# assert False
 		assert len(stau) == 2, "There should be two staus!!!"
-		decay_chain["stau"]=stau
 		
 		# assert False
 		if stau[0].parent().barcode() != choosen_higgs[0].barcode(): continue #check for if di-stau pt is same as higgs pt
 		tau_h	= [] # tau list
 
-		Higgs.push_back(choosen_higgs[0].p4()) 
+		# Higgs.push_back(choosen_higgs[0].p4()) 
 			
-		stau1.push_back(stau[0].p4())
-		stau2.push_back(stau[1].p4())
+		# stau1.push_back(stau[0].p4())
+		# stau2.push_back(stau[1].p4())
 		
 		n1 = [i for i in find_child(stau[0]) if i.absPdgId() ==1000022]
 		n2 = [i for i in find_child(stau[1]) if i.absPdgId() ==1000022]
 		
-		decay_chain["nue1"]=[n1[0],n2[0]]
+
 		tau_1 = [i for i in find_child(stau[0]) if i.absPdgId() ==15]
 		tau_2 = [i for i in find_child(stau[1]) if i.absPdgId() ==15]
 		
-		dPhi_tau1_tau2	= array('f',[])
+
 		t_h1 = [] #hadronic taus
 		t_h2 = [] #hadronic taus
-		# print '		Child of tau1: %s ,	Child tau2: %s'% (pdg(find_child(tau_1[0])),pdg(find_child(tau_2[0])))
-		### checking for hadronic taus
+
 		checkelmu = [] 
 		for i in Apdg(find_child(tau_1[0])):
 			checkelmu.append(i in [11,13])
@@ -334,52 +285,18 @@ for k in xrange(len(file_list)):
 		#####################################################
 		#t_had t_had 
 		else:	
-			# tau_h.sort(reverse=True, key=lambda x: x.p4().Pt()) 
-			print "Found a hadronic decay h h ####"
-			logging.info("		This is entry number: %s"%entry)
-			logging.info("		Working on %s"% file_list[k])
-			logging.info('		***Found a hadronic decay***		')
-			logging.info('		Higgs Found: 					%s' %pdg(higgs))
-			logging.info('		PT of the HIGGS:				%s' %PT(higgs))
-			logging.info('		Mass of the HIGGS:				%s' %MASS(higgs))
-			logging.info('		Child of the choosen_higgs:			%s'%pdg(choosen_higgs))
-			logging.info('		PT of the child of choosen_higgs:	%s'%PT(choosen_higgs))
-			logging.info('		Mass of the child of choosen_higgs Stau mass:	%s'%MASS(choosen_higgs))
-   			logging.info('		***Found a hadronic decay***	')
-			logging.info('		Child of stau[0]: %s'%pdg(find_child(stau[0])))
-			logging.info('		Child of stau[1]: %s'%pdg(find_child(stau[1])))
 
-			logging.info('		PT of Child of first stau[0]:-	n1: %s	tau pt: %s'%((PT(n1),PT(tau_1))) )
-			logging.info('		Mass of Child of first stau[0]:-	n1: %s	tau mass: %s'%(MASS(n1),MASS(tau_1)) )
-			logging.info('		PT of Child of second stau[1]:-	n2: %s	tau pt: %s'%(PT(n2),PT(tau_2)) )
-			logging.info('		Mass of Child of second stau[1]:-	n2: %s	tau mass: %s'%(MASS(n2),MASS(tau_2) ))
-			logging.info('		Child of tau1: %s ,	Child tau2: %s'%(pdg(find_child(tau_1[0])),pdg(find_child(tau_2[0]))))
-			
 			tau_h_1 = find_vis(tau_h[0])
 			tau_h_2 = find_vis(tau_h[1])
+
+			Higgs.push_back(choosen_higgs[0].p4()) 
 			
-			decay_chain['tau']=[tau_h_1,tau_h_2]
-			
-			# print decay_chain.keys()
-			# print [Apdg(i) for i in decay_chain.values()], " pdgId visible protion of tau so no pdgId"			
-			# print [PT(i) for i in decay_chain.values()], " before sorting "			
-			
-			if decay_chain['tau'][0].Pt() > decay_chain['tau'][1].Pt():
-				sorted_chain = dict(decay_chain)
-			elif decay_chain['tau'][0].Pt() < decay_chain['tau'][1].Pt():
-				sorted_chain['tau'] = list(reversed(decay_chain['tau']))
-				sorted_chain['nue1'] = list(reversed(decay_chain['nue1']))
-				sorted_chain['stau'] = list(reversed(decay_chain['stau']))
-				sorted_chain['higgs'] = list(reversed(decay_chain["higgs"]))
-			# print [PT(i) for i in sorted_chain.values()], " after sorting "
-			# Higgs.push_back(choosen_higgs[0].p4()) 
-			
-			# stau1.push_back(sorted_chain['stau'][0].p4())
-			# stau2.push_back(sorted_chain['stau'][1].p4())
+			stau1.push_back(sorted_chain['stau'][0].p4())
+			stau2.push_back(sorted_chain['stau'][1].p4())
 
 			neu1.push_back(sorted_chain['nue1'][0].p4())
 			neu2.push_back(sorted_chain['nue1'][1].p4())
-			nevent +=1
+
 
 			tau1.push_back(tau_h[0].p4())
 			tau2.push_back(tau_h[1].p4())
@@ -415,12 +332,9 @@ for k in xrange(len(file_list)):
 	tau2.clear()
 	vistau1.clear()
 	vistau2.clear()
-		
-	print "total number of events : \t", sum_of_higgs_last
-	print "number of passed events: \t", nevent
+
 	outF.Write()
 	outF.Close()	
-	print "Finished."
 
 can = ROOT.TCanvas('','',600,800)
 h.Draw("HIST")

@@ -1,20 +1,21 @@
 ###########################################
 #########  H_stastau Analysis   ###########
 ###########################################
-
-
 import os
 # print os.environ
-import ROOT 
-import numpy as np 
+import ROOT
+import numpy as np
 import math
 import pickle
 from array import array
-ROOT.gROOT.SetBatch(True)
 import logging
+ROOT.gROOT.SetBatch(True)
+
 # Initialize the xAOD infrastructure:
 if(not ROOT.xAOD.Init().isSuccess()): print "Failed xAOD.Init()"
-
+# for Mt2
+ROOT.gInterpreter.ProcessLine('#include "/cluster/home/bataju/compare/mt2/CalcGenericMT2/CalcGenericMT2/MT2_ROOT.h"')
+ROOT.gSystem.Load("/cluster/home/bataju/compare/mt2/CalcGenericMT2/CalcGenericMT2/MT2_ROOT.h")
 
 #################################
 ########### Functions ###########
@@ -57,12 +58,12 @@ def Apdg(n):
 		pass
 def get_eta(n):
 	#takes a list of particles container and returns the Eta in a list
-	
+
 	return [i.eta() for i in n]
 
 def get_phi(n):
 	#takes a list of particles container and returns the Phi in a list
-	
+
 	return [i.phi() for i in n]
 
 def PT(n):
@@ -77,7 +78,7 @@ def MASS(n):
 	return [i.p4().M() for i in n]
 
 def output_True_from_list(test_list):
-	#shows information about list 
+	#shows information about list
 	return list(filter(lambda i: test_list[i], range(len(test_list))))
 
 def DeltaR(v1,v2):
@@ -114,7 +115,7 @@ def find_vis(p):
 			#print i
 	assert len(vis), " No children found for {}".format(pdg(p))
 	for i in vis:
-		a +=i.p4()	
+		a +=i.p4()
 	return a
 
 #################################
@@ -144,14 +145,14 @@ print file_list
 
 count 			= 0
 skiped 			= 0
-outF = ROOT.TFile.Open("H_2stau_2tau_old_1700.root", "RECREATE")
+outF = ROOT.TFile.Open("H_2stau_2tau_old_git_1700.root", "RECREATE")
 outTree = ROOT.TTree('T','Test TTree')
 
-# creating vectors 
+# creating vectors
 Higgs = ROOT.vector(ROOT.TLorentzVector)()
 stau1 = ROOT.vector(ROOT.TLorentzVector)()
 stau2 = ROOT.vector(ROOT.TLorentzVector)()
-outTree.Branch("higgs",Higgs )	
+outTree.Branch("higgs",Higgs )
 outTree.Branch("stau1",stau1 )
 outTree.Branch("stau2",stau2 )
 
@@ -166,7 +167,7 @@ for k in xrange(len(file_list)):
 	decay_chain = {}
 	sorted_chain ={}
 	for entry in xrange(t.GetEntries()):
-		
+
 		t.GetEntry(entry)
 		Met = t.MET_Truth
 		all_particles = t.TruthParticles
@@ -174,42 +175,42 @@ for k in xrange(len(file_list)):
 		metvector1.SetPtEtaPhiM(Met.get(1).met(), 0, Met.get(1).phi(), 0)
 		higgs = [i for i in all_particles if i.absPdgId() in [36,35]]
 		assert len(higgs) ,"NO HIGGS BOSONS FOUND!!!"
-		
+
 		higgs_last = find_child(higgs[-1])
   		assert higgs_last is not None, " This higgs has not children"
 		decay_chain["higgs"]=[higgs[-1]]
-		
-		Higgs.push_back(higgs[-1].p4()) 
-			
+
+		Higgs.push_back(higgs[-1].p4())
+
 		stau = [i for i in higgs_last if i.absPdgId() in [1000015,2000015]]
 		assert len(stau) == 2, "There should be two staus!!!"
 		decay_chain["stau"]=stau
-		
+
 		tau_h	= [] # tau list
 		n1 = [i for i in find_child(stau[0]) if i.absPdgId() ==1000022]
 		n2 = [i for i in find_child(stau[1]) if i.absPdgId() ==1000022]
 		decay_chain["nue1"]=[n1[0],n2[0]]
 		tau_1 = [i for i in find_child(stau[0]) if i.absPdgId() ==15]
 		tau_2 = [i for i in find_child(stau[1]) if i.absPdgId() ==15]
-		
+
 		dPhi_tau1_tau2	= array('f',[])
 		t_h1 = [] #hadronic taus
 		t_h2 = [] #hadronic taus
-		checkelmu = [] 
+		checkelmu = []
 		for i in Apdg(find_child(tau_1[0])):
 			checkelmu.append(i in [11,13])
 		if sum(checkelmu) < 1:
 			t_h1 = tau_1[:]
 			tau_h.append(tau_1[0])
-		
+
 		checkelmu = []
 
 		for i in Apdg(find_child(tau_2[0])):
 			checkelmu.append(i in [11,13])
-		if sum(checkelmu) < 1:	
+		if sum(checkelmu) < 1:
 			t_h2 = tau_2[:]
 			tau_h.append(tau_2[0])
-		
+
 		#####################################################
 		#t_lep t_lep
 		if len(tau_h) < 1:	continue
@@ -217,19 +218,10 @@ for k in xrange(len(file_list)):
 		#t_had t_lep
 		elif len(tau_h) < 2:	continue
 		#####################################################
-		#t_had t_had 
-		else:	
+		#t_had t_had
+		else:
 			tau_h_1 = find_vis(tau_h[0])
 			tau_h_2 = find_vis(tau_h[1])
-			decay_chain['tau']=[tau_h_1,tau_h_2]
-			
-			if decay_chain['tau'][0].Pt() > decay_chain['tau'][1].Pt():
-				sorted_chain = dict(decay_chain)
-			elif decay_chain['tau'][0].Pt() < decay_chain['tau'][1].Pt():
-				sorted_chain['tau'] = list(reversed(decay_chain['tau']))
-				sorted_chain['nue1'] = list(reversed(decay_chain['nue1']))
-				sorted_chain['stau'] = list(reversed(decay_chain['stau']))
-				sorted_chain['higgs'] = list(reversed(decay_chain["higgs"]))
 			
 			stau1.push_back(stau[0].p4())
 			stau2.push_back(stau[1].p4())
@@ -239,5 +231,5 @@ for k in xrange(len(file_list)):
 	stau1.clear()
 	stau2.clear()
 outF.Write()
-outF.Close()	
+outF.Close()
 print "Finished."
