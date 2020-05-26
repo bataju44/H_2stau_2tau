@@ -152,18 +152,18 @@ def find_vis(p):
 # ztautau.append('/cluster/home/bataju/stau_analaysis/aod_files/mc16_la13TeV.361108.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Ztautau.recon.AOD.e3601_s3126_r9364/AOD.11182673._003111.pool.root.1')
 tautau = []
 f1 = [0,1,2,4,5]
-# tautau = [['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341881.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH600_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17073421._00000{}.pool.root.1'.format(i+1) for i in xrange(6)]] 	#600
-tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341885.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH1000_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4298_e5984_a875_r10201_r10210_p3749/DAOD_HIGG4D4.17259964._00000{}.pool.root.1'.format(i+1) for i in xrange(6)]) #1000
-# tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.345288.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH2000_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5686_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17076570._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#2000
-# tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.345292.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH2500_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5686_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17073341._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#2500
+tautau = [['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341881.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH600_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17073421._00000{}.pool.root.1'.format(i+1) for i in xrange(6)]] 	#600
+# tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341885.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH1000_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4298_e5984_a875_r10201_r10210_p3749/DAOD_HIGG4D4.17259964._00000{}.pool.root.1'.format(i+1) for i in xrange(6)]) #1000
+tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.345288.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH2000_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5686_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17076570._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#2000
+tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.345292.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH2500_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5686_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17073341._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#2500
 # tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341874.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH125_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_a875_r10724_p3759/DAOD_HIGG4D4.17073198._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#125
-# tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341875.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH200_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_a875_r10724_p3759/DAOD_HIGG4D4.17075704._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#200
+tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341875.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH200_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_a875_r10724_p3759/DAOD_HIGG4D4.17075704._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#200
 # tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341877.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH300_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_a875_r10724_p3759/DAOD_HIGG4D4.17075878._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#300
-# tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341879.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH400_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4298_a875_r10724_p3759/DAOD_HIGG4D4.17073318._00000{}.pool.root.1'.format(i+1) for i in [0,1,2,6,5]])	#400
-# tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341920.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH1500_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5314_a875_r10724_p3759/DAOD_HIGG4D4.17075106._0000{}.pool.root.1'.format(i) for i in [11,12,13,14,15]])	#1500
+tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341879.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH400_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4298_a875_r10724_p3759/DAOD_HIGG4D4.17073318._00000{}.pool.root.1'.format(i+1) for i in [0,1,2,6,5]])	#400
+tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341920.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH1500_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5314_a875_r10724_p3759/DAOD_HIGG4D4.17075106._0000{}.pool.root.1'.format(i) for i in [11,12,13,14,15]])	#1500
 # tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341879.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH400_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4298_a875_r10724_p3759/DAOD_HIGG4D4.17073318._00000{}.pool.root.1'.format(i+1)  for i in xrange(6)])
-# temp = [600,1000,2000,2500,125,200,300,400,1500]
-temp = [1000]
+temp = [600,2000,2500,200,400,1500]
+# temp = [400]
 # f1 = [3,4,5,7,11]
 f1 = [0,1,2,4,5]
 # tautau = [['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341920.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH1500_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5314_a875_r10724_p3759/DAOD_HIGG4D4.17075106._00000{}.pool.root.1'.format(i) for i in f1]]	#1500
@@ -192,7 +192,7 @@ skiped 			= 0
 ########### Analysis Code Starts ############
 for m in xrange(len(temp)):
 	print temp[m]
-	outF = ROOT.TFile.Open("H_2tau_O_{}.root".format(temp[m]), "RECREATE")
+	outF = ROOT.TFile.Open("H_2tau_{}.root".format(temp[m]), "RECREATE")
 	outTree = ROOT.TTree('T','Test TTree')
 	
 	# creating vectors 
@@ -211,14 +211,19 @@ for m in xrange(len(temp)):
 	outTree.Branch("tau2",tau2 )
 	outTree.Branch("vistau1",vistau1 )
 	outTree.Branch("vistau2",vistau2 )
-
+	Higgs.clear()
+	mets.clear()
+	tau1.clear()
+	tau2.clear()
+	vistau1.clear()
+	vistau2.clear()
 	
 	for k in xrange(len(file_list[m])):
 		f = ROOT.TFile.Open(file_list[m][k], "READONLY")
 		t = ROOT.xAOD.MakeTransientTree(f, "CollectionTree")
 
 		for entry in xrange(t.GetEntries()):
-			# if entry == 50: break
+			if entry == 2000: break
 			#========================= Standard Prints
 			# print "Number of input events:", t.GetEntries()
 			# print "Working on ", file_list[m][k]
@@ -247,15 +252,7 @@ for m in xrange(len(temp)):
 				# elif i.child(0).absPdgId() in [1000015,2000015]: choosen_higgs = [i.child(p) for p in xrange(i.nChildren())]
 				else:	higgs_with_children.append(i)
 			assert len(choosen_higgs) == 1
-			print "PT of higgs that is being picked \t", PT(choosen_higgs) , '\t', 'barcode: ', '\t',choosen_higgs[0].barcode()
-			# print "PT of higgs that is not picked \t", [i.p4().Pt() for i in higgs_with_children ] , '\t', 'barcode: ', '\t',[ i.barcode() for i in higgs_with_children ]
-			print "Immidate children of higgs ", [ (i.pdgId(),i.child(j).pdgId()) for  i in higgs for j in xrange(i.nChildren())]
-			print "PT of all the higgs present \t", PT(higgs), '\t', 'barcode: ', '\t',[i.barcode() for i in higgs]
-			# print PT(higgs), ' \n Pt higgs '
-			print "Pdg higgs \t", pdg(higgs) 
-			# print "PT of child of all higgs \t" , [ j.p4().Pt() for i in higgs for j in find_child(i)]
-			# print "Pdgid of child of all higgs \t" , [ j.pdgId() for i in higgs for j in find_child(i) ]
-			# print "barcode  of all the Childen from higgs \t" , [ j.barcode() for i in higgs for j in find_child(i) ]
+			
 			
 			higgs_last = find_child(choosen_higgs[0])
 			
@@ -263,9 +260,9 @@ for m in xrange(len(temp)):
 			tau_h = [i for i in higgs_last if i.absPdgId() == 15]
 			if len(tau_h) < 2:	continue
 			# assert len(tau_h) >= 2, "Less than one tau!!!"
-			print "Di-stau Pt of all the stau", (tau_h[0].p4() +tau_h[1].p4()).Pt()
-			print "parent of stau [0] \t" , tau_h[0].parent().pdgId() , "barcode \t" , tau_h[0].parent().barcode()
-			print "parent of stau [1] \t" , tau_h[1].parent().pdgId() , "barcode \t"  , tau_h[1].parent().barcode()
+			# print "Di-stau Pt of all the stau", (tau_h[0].p4() +tau_h[1].p4()).Pt()
+			# print "parent of stau [0] \t" , tau_h[0].parent().pdgId() , "barcode \t" , tau_h[0].parent().barcode()
+			# print "parent of stau [1] \t" , tau_h[1].parent().pdgId() , "barcode \t"  , tau_h[1].parent().barcode()
 			t_h1 = [] #hadronic taus
 			t_h2 = [] #hadronic taus
 			tau_vis = []
@@ -289,7 +286,7 @@ for m in xrange(len(temp)):
 				tau_vis.append(tau_2)	
 
 			if len(tau_vis) < 2: continue	
-				
+
 			Higgs.push_back(choosen_higgs[0].p4())
 			tau1.push_back(tau_h[0].p4())
 			tau2.push_back(tau_h[1].p4())
@@ -298,12 +295,7 @@ for m in xrange(len(temp)):
 			vistau2.push_back(find_vis(tau_h[1]))
 
 	outTree.Fill()
-	Higgs.clear()
-	mets.clear()
-	tau1.clear()
-	tau2.clear()
-	vistau1.clear()
-	vistau2.clear()
+	
 
 	outF.Write()
 	outF.Close()	

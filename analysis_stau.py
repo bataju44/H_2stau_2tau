@@ -41,7 +41,6 @@ def find_parent(p):
 
 def pdg(n):
 	#takes a list of particles container and returns the pdgId in a list
-
 	return [i.pdgId() for i in n if i is not None]
 
 def Apdg(n):
@@ -188,6 +187,16 @@ for k in xrange(len(file_list)):
 	outTree.Branch("tau2",tau2 )
 	outTree.Branch("vistau1",vistau1 )
 	outTree.Branch("vistau2",vistau2 )
+	Higgs.clear()
+	stau1.clear()
+	stau2.clear()
+	neu1.clear()
+	neu2.clear()
+	mets.clear()
+	tau1.clear()
+	tau2.clear()
+	vistau1.clear()
+	vistau2.clear()
 
 	mt2_c = array('f',[])
 	mt2_s = array('f',[])
@@ -219,16 +228,17 @@ for k in xrange(len(file_list)):
 		METp = ROOT.TLorentzVector(0,0,0,0)
 		METp.SetPxPyPzE(Met.get(1).mpx(),Met.get(1).mpy(),0,Met.get(1).sumet())
 
+
 		higgs = [i for i in all_particles if i.absPdgId() in [36,35]]
-		
+		higgs_with_childern_as_higgs = []
 		higgs_with_children = []
-		print higgs
-		
+
+		choosen_higgs = []
 		for i  in higgs:
-			if i.child(0).pdgId() == i.pdgId():	continue
-			elif i.child(0).absPdgId() in [1000015,2000015]: choosen_higgs = [i]
+			if i.child(0).pdgId() == i.pdgId():	higgs_with_childern_as_higgs.append(i)
+			elif i.child(0).absPdgId() in [1000015,2000015]:  choosen_higgs.append(i)
 			else:	higgs_with_children.append(i)
-		assert len(choosen_higgs) == 1
+		assert len(choosen_higgs) == 1,  " More than two higgs with immediate stau children."
 	
 		h.Fill(choosen_higgs[0].child(0).p4().Pt())	
 		h1.Fill(choosen_higgs[0].child(1).p4().Pt())	
@@ -236,10 +246,10 @@ for k in xrange(len(file_list)):
 
 		for i in choosen_higgs:
 			for j in xrange(i.nChildren()):
-				print " Choose higgs child", i.child(j).pdgId()
+				print " Choose higgs child: ", j , i.child(j).pdgId()
 		stau = [ i.child(j) for i in choosen_higgs for j in xrange(i.nChildren())]
 		
-		assert len(stau) == 2, "There should be two staus!!!"
+		assert len(stau) == 2, " There should be two staus."
 		
 		# assert False
 		if stau[0].parent().barcode() != choosen_higgs[0].barcode(): continue #check for if di-stau pt is same as higgs pt
@@ -252,11 +262,9 @@ for k in xrange(len(file_list)):
 		
 		n1 = [i for i in find_child(stau[0]) if i.absPdgId() ==1000022]
 		n2 = [i for i in find_child(stau[1]) if i.absPdgId() ==1000022]
-		
 
 		tau_1 = [i for i in find_child(stau[0]) if i.absPdgId() ==15]
 		tau_2 = [i for i in find_child(stau[1]) if i.absPdgId() ==15]
-		
 
 		t_h1 = [] #hadronic taus
 		t_h2 = [] #hadronic taus
@@ -322,17 +330,6 @@ for k in xrange(len(file_list)):
 			# mt2_s.append(mt2s.Compute())
 
 	outTree.Fill()
-	Higgs.clear()
-	stau1.clear()
-	stau2.clear()
-	neu1.clear()
-	neu2.clear()
-	mets.clear()
-	tau1.clear()
-	tau2.clear()
-	vistau1.clear()
-	vistau2.clear()
-
 	outF.Write()
 	outF.Close()	
 
