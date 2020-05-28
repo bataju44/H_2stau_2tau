@@ -23,7 +23,7 @@ ROOT.gSystem.Load("/cluster/home/bataju/compare/mt2/CalcGenericMT2/CalcGenericMT
 def find_child(p):
 	#takes a particles container and retuns a list of the child particle container
 	for i in range(p.nChildren()):
-		if type(p.child(i).pdgId()) == []:
+		if not p.child(i):
 			continue
 		elif p.child(i).pdgId() != p.pdgId():
 			p_child = [p.child(i) for i in range(p.nChildren())]
@@ -43,56 +43,36 @@ def find_parent(p):
 
 def pdg(n):
 	#takes a list of particles container and returns the pdgId in a list
-
+	if not n:	
+		return []
 	return [i.pdgId() for i in n if i is not None]
-def MASS(n):
-	#takes a  particles container and returns the MASS in a list
-	return [i.p4().M() for i in n] 
 
 def Apdg(n):
 	#takes a list of particles container and returns the pdgId in a list
-	
+	if not n:	
+		return []
 	return [i.absPdgId() for i in n if i is not None]
-
-def get_eta(n):
-	#takes a list of particles container and returns the Eta in a list
-	
-	return [i.eta() for i in n]
-
-def get_phi(n):
-	#takes a list of particles container and returns the Phi in a list
-	
-	return [i.phi() for i in n]
 
 def PT(n):
 	#takes a  particles container and returns the pt in a list
-	return [i.p4().Pt() for i in n if i is not None]
-
-def output_True_from_list(test_list):
-	#shows information about list 
-	return list(filter(lambda i: test_list[i], range(len(test_list))))
+	if not n:	
+		return []
+	elif isinstance(n[0],ROOT.xAOD.TruthParticle_v1):
+		return [i.p4().Pt() for i in n if i is not None] 
+	elif isinstance(n[0],ROOT.TLorentzVector):
+		return [i.Pt() for i in n if i is not None]
 
 def DeltaR(v1,v2):
 	#calculates deltaR from two .p4()
 	p1=v1
 	p2=v2
 	return p1.DeltaR(p2)
+	
 def DeltaPhi(v1,v2):
 	#calculates deltaR from two .p4()
 	p1=v1
 	p2=v2
 	return p1.DeltaPhi(p2)
-def mT(v1,v2):
-	# calcaulate transverse mass for p4 and p4
-	p1=v1
-	p2=v2
-	return (p1+p2).Mt()
-
-def mT_(v1,v2):
-	# calcaulate transverse mass for p4 and met
-	p1=v1
-	p2=v2
-	return (p1+p2).Mt()
 
 def find_vis(p):
 	invisible = [12,14,16]
@@ -152,18 +132,18 @@ def find_vis(p):
 # ztautau.append('/cluster/home/bataju/stau_analaysis/aod_files/mc16_la13TeV.361108.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Ztautau.recon.AOD.e3601_s3126_r9364/AOD.11182673._003111.pool.root.1')
 tautau = []
 f1 = [0,1,2,4,5]
-tautau = [['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341881.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH600_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17073421._00000{}.pool.root.1'.format(i+1) for i in xrange(6)]] 	#600
+# tautau = [['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341881.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH600_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17073421._00000{}.pool.root.1'.format(i+1) for i in xrange(6)]] 	#600
 # tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341885.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH1000_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4298_e5984_a875_r10201_r10210_p3749/DAOD_HIGG4D4.17259964._00000{}.pool.root.1'.format(i+1) for i in xrange(6)]) #1000
-tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.345288.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH2000_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5686_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17076570._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#2000
-tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.345292.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH2500_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5686_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17073341._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#2500
+# tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.345288.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH2000_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5686_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17076570._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#2000
+# tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.345292.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH2500_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5686_e5984_a875_r10724_r10726_p3759/DAOD_HIGG4D4.17073341._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#2500
 # tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341874.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH125_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_a875_r10724_p3759/DAOD_HIGG4D4.17073198._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#125
 tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341875.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH200_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_a875_r10724_p3759/DAOD_HIGG4D4.17075704._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#200
 # tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341877.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH300_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4482_a875_r10724_p3759/DAOD_HIGG4D4.17075878._00000{}.pool.root.1'.format(i+1) for i in xrange(6)])	#300
 tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341879.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH400_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4298_a875_r10724_p3759/DAOD_HIGG4D4.17073318._00000{}.pool.root.1'.format(i+1) for i in [0,1,2,6,5]])	#400
 tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341920.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH1500_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5314_a875_r10724_p3759/DAOD_HIGG4D4.17075106._0000{}.pool.root.1'.format(i) for i in [11,12,13,14,15]])	#1500
 # tautau.append(['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341879.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH400_yb2_tautauhh.deriv.DAOD_HIGG4D4.e4298_a875_r10724_p3759/DAOD_HIGG4D4.17073318._00000{}.pool.root.1'.format(i+1)  for i in xrange(6)])
-temp = [600,2000,2500,200,400,1500]
-# temp = [400]
+# temp = [600,2000,2500,200,400,1500]
+temp = [200,400,1500]
 # f1 = [3,4,5,7,11]
 f1 = [0,1,2,4,5]
 # tautau = [['/cluster/home/bataju/tautau/DAOD/mc16_13TeV.341920.aMcAtNloPythia8EvtGen_A14NNPDF23LO_bbH1500_yb2_tautauhh.deriv.DAOD_HIGG4D4.e5314_a875_r10724_p3759/DAOD_HIGG4D4.17075106._00000{}.pool.root.1'.format(i) for i in f1]]	#1500
@@ -181,29 +161,24 @@ file_list = tautau[:]
 print file_list
 print "number of files", len(file_list)
 
-#################################
-############ LIST ###############
-#################################
+################################################
+############ Analysis Code Starts ##############
+################################################
 
 count 			= 0
 skiped 			= 0
 
-
-########### Analysis Code Starts ############
 for m in xrange(len(temp)):
 	print temp[m]
-	outF = ROOT.TFile.Open("H_2tau_{}.root".format(temp[m]), "RECREATE")
+	outF = ROOT.TFile.Open("H_2tauhad_{}.root".format(temp[m]), "RECREATE")
 	outTree = ROOT.TTree('T','Test TTree')
 	
-	# creating vectors 
 	Higgs 	= ROOT.vector(ROOT.TLorentzVector)()
 	mets  	= ROOT.vector(ROOT.TLorentzVector)()
 	tau1   	= ROOT.vector(ROOT.TLorentzVector)()
 	tau2   	= ROOT.vector(ROOT.TLorentzVector)()
 	vistau1 = ROOT.vector(ROOT.TLorentzVector)()
 	vistau2 = ROOT.vector(ROOT.TLorentzVector)()
-
-	# create branches
 
 	outTree.Branch("higgs",Higgs )
 	outTree.Branch("met",mets )
@@ -243,13 +218,16 @@ for m in xrange(len(temp)):
 			higgs = [i for i in all_particles if i.absPdgId() in [25]]
 			print pdg(higgs)
 			print "__________________________________________"
-			higgs_with_children = []
 			if len(higgs) < 1: continue
+			
+			higgs_with_childern_as_higgs = []
+			higgs_with_children = []
+			choosen_higgs = []
+			
 			for i  in higgs:
-				if i.nChildren() == 0: continue
-				elif i.child(0).pdgId() == i.pdgId():	continue
-				elif i.child(0).absPdgId() in [15]: choosen_higgs = [i]
-				# elif i.child(0).absPdgId() in [1000015,2000015]: choosen_higgs = [i.child(p) for p in xrange(i.nChildren())]
+				if i.child(0) == None: continue
+				elif i.child(0).pdgId() == i.pdgId():	higgs_with_childern_as_higgs.append(i)
+				elif i.child(0).absPdgId() in [15]:  choosen_higgs.append(i)
 				else:	higgs_with_children.append(i)
 			assert len(choosen_higgs) == 1
 			
@@ -285,7 +263,18 @@ for m in xrange(len(temp)):
 				t_h2 = tau_2
 				tau_vis.append(tau_2)	
 
-			if len(tau_vis) < 2: continue	
+			if len(tau_vis) < 2: continue	 #check for hadronic tau 
+
+			print "PT of higgs that is being picked \t", PT(choosen_higgs) , '\t', 'barcode: ', '\t',choosen_higgs[0].barcode()
+			print "PT of higgs that is not picked \t", [i.p4().Pt() for i in higgs_with_children ] , '\t', 'barcode: ', '\t',[ i.barcode() for i in higgs_with_children ]
+			print "Immidate children of higgs ", [ (i.pdgId(),i.child(j).pdgId()) for  i in higgs for j in xrange(i.nChildren())]
+			print "PT of all the higgs present \t", PT(higgs), '\t', 'barcode: ', '\t',[i.barcode() for i in higgs]
+			# print PT(higgs), ' \n Pt higgs '
+			print "Pdg higgs \t", pdg(higgs) 
+			print "PT of child of all higgs \t" , [ PT(find_child(i)) for i in higgs if i is not None]
+			print "Pdgid of child of all higgs \t" , [ pdg(find_child(i)) for i in higgs if i is not None]
+			print "barcode  of all the Childen from higgs \t" , [ j.barcode() for i in higgs for j in find_child(i)  if i is not None]
+			
 
 			Higgs.push_back(choosen_higgs[0].p4())
 			tau1.push_back(tau_h[0].p4())
@@ -295,8 +284,6 @@ for m in xrange(len(temp)):
 			vistau2.push_back(find_vis(tau_h[1]))
 
 	outTree.Fill()
-	
-
 	outF.Write()
 	outF.Close()	
 	print "Finished."

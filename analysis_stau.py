@@ -24,7 +24,9 @@ ROOT.gSystem.Load("/cluster/home/bataju/compare/mt2/CalcGenericMT2/CalcGenericMT
 def find_child(p):
 	#doesnot return the immidate parent
 	for i in range(p.nChildren()):
-		if p.child(i).pdgId() != p.pdgId():
+		if not p.child(i):
+			continue
+		elif p.child(i).pdgId() != p.pdgId():
 			p_child = [p.child(i) for i in range(p.nChildren())]
 			return p_child
 			#return [p.child(i) for i in range(p.nChildren())]
@@ -44,8 +46,9 @@ def pdg(n):
 	return [i.pdgId() for i in n if i is not None]
 
 def Apdg(n):
-	#takes a list of particles container and returns the pdgId in a list
-	if isinstance(n[0],ROOT.xAOD.TruthParticle_v1):
+	if not n:	
+		return []
+	elif isinstance(n[0],ROOT.xAOD.TruthParticle_v1):
 		return [i.absPdgId() for i in n if i is not None]
 	else:
 		pass
@@ -60,8 +63,9 @@ def get_phi(n):
 	return [i.phi() for i in n]
 
 def PT(n):
-	#takes a  particles container and returns the pt in a list
-	if isinstance(n[0],ROOT.xAOD.TruthParticle_v1):
+	if not n:	
+		return []
+	elif isinstance(n[0],ROOT.xAOD.TruthParticle_v1):
 		return [i.p4().Pt() for i in n if i is not None] 
 	elif isinstance(n[0],ROOT.TLorentzVector):
 		return [i.Pt() for i in n if i is not None]
@@ -130,9 +134,9 @@ def scale_hist(hist_bkg_list,norm=1):
 #################################
 
 #
-# temp = [700,730,800,830,930,1000,1130,1280,1500,1700,2000,2200,2500]
+temp = [700,730,800,830,930,1000,1130,1280,1500,1700,2000,2200,2500]
 # temp = [1500,1700,2000,2200,2500]
-temp = [1000]
+# temp = [730,800,1700]
 sig_file = ['/cluster/home/bataju/BENCHMARK/'+str(i)+'/truth/DAOD_TRUTH1.test.pool.root' for i in temp]
 
 file_list = sig_file[:]
@@ -160,7 +164,7 @@ for k in xrange(len(file_list)):
 
 	f = ROOT.TFile.Open(file_list[k], "READONLY")
 	t = ROOT.xAOD.MakeTransientTree(f, "CollectionTree")
-	outF = ROOT.TFile.Open("H_2stau_2tau_O_{}.root".format(temp[k]), "RECREATE")
+	outF = ROOT.TFile.Open("H_2stauhad_{}.root".format(temp[k]), "RECREATE")
 	outTree = ROOT.TTree('T','Test TTree')
 
 	# creating vectors 
@@ -232,7 +236,6 @@ for k in xrange(len(file_list)):
 		higgs = [i for i in all_particles if i.absPdgId() in [36,35]]
 		higgs_with_childern_as_higgs = []
 		higgs_with_children = []
-
 		choosen_higgs = []
 		for i  in higgs:
 			if i.child(0).pdgId() == i.pdgId():	higgs_with_childern_as_higgs.append(i)
@@ -246,28 +249,26 @@ for k in xrange(len(file_list)):
 
 		for i in choosen_higgs:
 			for j in xrange(i.nChildren()):
-				print " Choose higgs child: ", j , i.child(j).pdgId()
+				print " Choosen higgs child: ", j ,"\t", i.child(j).pdgId()
 		stau = [ i.child(j) for i in choosen_higgs for j in xrange(i.nChildren())]
 		
 		assert len(stau) == 2, " There should be two staus."
-		
-		# assert False
-		if stau[0].parent().barcode() != choosen_higgs[0].barcode(): continue #check for if di-stau pt is same as higgs pt
+	
+		#check for if di-stau pt is same as higgs pt
+		if stau[0].parent().barcode() != choosen_higgs[0].barcode(): continue 
 		tau_h	= [] # tau list
-
-		# Higgs.push_back(choosen_higgs[0].p4()) 
-			
-		# stau1.push_back(stau[0].p4())
-		# stau2.push_back(stau[1].p4())
 		
 		n1 = [i for i in find_child(stau[0]) if i.absPdgId() ==1000022]
 		n2 = [i for i in find_child(stau[1]) if i.absPdgId() ==1000022]
 
 		tau_1 = [i for i in find_child(stau[0]) if i.absPdgId() ==15]
 		tau_2 = [i for i in find_child(stau[1]) if i.absPdgId() ==15]
+		
+
 
 		t_h1 = [] #hadronic taus
 		t_h2 = [] #hadronic taus
+
 
 		checkelmu = [] 
 		for i in Apdg(find_child(tau_1[0])):
@@ -293,26 +294,33 @@ for k in xrange(len(file_list)):
 		#####################################################
 		#t_had t_had 
 		else:	
-
+			# continue
 			tau_h_1 = find_vis(tau_h[0])
 			tau_h_2 = find_vis(tau_h[1])
-
-			Higgs.push_back(choosen_higgs[0].p4()) 
-			
-			stau1.push_back(sorted_chain['stau'][0].p4())
-			stau2.push_back(sorted_chain['stau'][1].p4())
-
-			neu1.push_back(sorted_chain['nue1'][0].p4())
-			neu2.push_back(sorted_chain['nue1'][1].p4())
-
-
-			tau1.push_back(tau_h[0].p4())
-			tau2.push_back(tau_h[1].p4())
-
-			vistau1.push_back(sorted_chain['tau'][0])
-			vistau2.push_back(sorted_chain['tau'][1])
-			
+			Higgs.push_back(choosen_higgs[0].p4()) 	
+			stau1.push_back(stau[0].p4())
+			stau2.push_back(stau[1].p4())
+			neu1.push_back(n1[0].p4())
+			neu2.push_back(n2[0].p4())
+			tau1.push_back(tau_1[0].p4())
+			tau2.push_back(tau_2[0].p4())
 			mets.push_back(metvector1)
+			
+			vistau1.push_back(tau_h_1[0])
+			vistau2.push_back(tau_h_2[0])
+			
+			print "PT of higgs that is being picked \t", PT(choosen_higgs) , '\t', 'barcode: ', '\t',choosen_higgs[0].barcode()
+			print "PT of higgs that is not picked \t", [i.p4().Pt() for i in higgs_with_children ] , '\t', 'barcode: ', '\t',[ i.barcode() for i in higgs_with_children ]
+			print "Immidate children of higgs ", [ (i.pdgId(),i.child(j).pdgId()) for  i in higgs for j in xrange(i.nChildren())]
+			print "PT of all the higgs present \t", PT(higgs), '\t', 'barcode: ', '\t',[i.barcode() for i in higgs]
+			# print PT(higgs), ' \n Pt higgs '
+			print "Pdg higgs \t", pdg(higgs) 
+			print "PT of child of all higgs \t" , [ PT(find_child(i)) for i in higgs if i is not None]
+			print "Pdgid of child of all higgs \t" , [ pdg(find_child(i)) for i in higgs if i is not None]
+			print "barcode  of all the Childen from higgs \t" , [ j.barcode() for i in higgs for j in find_child(i)  if i is not None]
+			
+
+			##  MT2
 			# combined = float(520E3)
 			# single = float(170E3)
 			
@@ -333,10 +341,10 @@ for k in xrange(len(file_list)):
 	outF.Write()
 	outF.Close()	
 
-can = ROOT.TCanvas('','',600,800)
-h.Draw("HIST")
-can.Print("stau1.png")
-h1.Draw("HIST")
-can.Print("stau2.png")
-h2.Draw("HIST")
-can.Print("pthiggs.png")
+# can = ROOT.TCanvas('','',600,800)
+# h.Draw("HIST")
+# can.Print("stau1.png")
+# h1.Draw("HIST")
+# can.Print("stau2.png")
+# h2.Draw("HIST")
+# can.Print("pthiggs.png")
