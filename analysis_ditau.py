@@ -170,7 +170,7 @@ skiped 			= 0
 
 for m in xrange(len(temp)):
 	print temp[m]
-	outF = ROOT.TFile.Open("H_2tauhad_{}.root".format(temp[m]), "RECREATE")
+	outF = ROOT.TFile.Open("H_2tau_vishad_{}.root".format(temp[m]), "RECREATE")
 	outTree = ROOT.TTree('T','Test TTree')
 	
 	Higgs 	= ROOT.vector(ROOT.TLorentzVector)()
@@ -199,6 +199,7 @@ for m in xrange(len(temp)):
 
 		for entry in xrange(t.GetEntries()):
 			if entry == 2000: break
+			# if entry == 5: break
 			#========================= Standard Prints
 			# print "Number of input events:", t.GetEntries()
 			# print "Working on ", file_list[m][k]
@@ -271,9 +272,9 @@ for m in xrange(len(temp)):
 			print "PT of all the higgs present \t", PT(higgs), '\t', 'barcode: ', '\t',[i.barcode() for i in higgs]
 			# print PT(higgs), ' \n Pt higgs '
 			print "Pdg higgs \t", pdg(higgs) 
-			print "PT of child of all higgs \t" , [ PT(find_child(i)) for i in higgs if i is not None]
-			print "Pdgid of child of all higgs \t" , [ pdg(find_child(i)) for i in higgs if i is not None]
-			print "barcode  of all the Childen from higgs \t" , [ j.barcode() for i in higgs for j in find_child(i)  if i is not None]
+			print "PT of child of all higgs \t" , [ PT(find_child(i)) for i in higgs if i.child(0) is not None]
+			print "Pdgid of child of all higgs \t" , [ pdg(find_child(i)) for i in higgs if i.child(0) is not None]
+			# print "barcode  of all the Childen from higgs \t" , [ j.barcode() for i in higgs for j in find_child(i)  if i.child(0) is not None]
 			
 
 			Higgs.push_back(choosen_higgs[0].p4())
